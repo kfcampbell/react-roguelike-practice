@@ -1,34 +1,41 @@
 import React, { Component } from 'react';
 import './App.css';
+import tileMap from './tiles/map';
 
 class App extends Component {
 
-  generateTileMap = () => {
-    var exampleArr = [[1, 1, 1, 1, 1],
-                     [0, 0, 0, 0, 1],
-                     [0, 0, 1, 1, 1],
-                     [0, 0, 0, 0, 1],
-                     [1, 1, 1, 1, 1]];
-    return exampleArr;
+  getTileMap = () => {
+    return tileMap.tileMap;
   }
 
-  generateRows = () => {
-    return this.generateTileMap(rows => {
-      var row = rows.map(cell => <td>{cell}</td>);
-      return <tr>{row}</tr>;
-    });
+  parseElement = (element) => {
+    var elem = ' ';
+    switch(element){
+      case '1':
+        elem = '#';
+      case '0':
+        elem = ' ';
+      case '@':
+        elem = '@';
+      default:
+        elem = ' ';
+    }
+    return elem;
   }
 
   render() {
+    var tileMap = this.getTileMap();
+    var local = this; // super hacky, does not work.
     return (
-      <table>{this.generateRows()}</table>
-      /*<div>
-        {tileMap.map(function(arr, index){
-          arr.map(function(element, index){
-            return <div className='map' key={index}>{element}</div>;
-          });
+      <div>
+        {tileMap.map(function (arr, index) {
+          return (<div className='mapRow' key={index}>
+            {arr.map(function (element, ind) {
+              return <span className='mapElement' key={ind}>{local.parseElement(element)}</span>;
+            })}
+          </div>);
         })}
-      </div>*/
+      </div>
     );
   }
 }

@@ -27,8 +27,24 @@
   to { transform: rotate(360deg); }
 }
 
-.map {
-  padding: 20px;
+.mapElement {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  border-style: dashed;
+  border-width: 1px;
+  border-color: orange;
+  width: 20px;
+  height: 20px;
+}
+
+.mapRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
   border-style: solid;
   border-width: 1px;
+  border-color: black;
 }
