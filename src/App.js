@@ -4,34 +4,59 @@ import tileMap from './tiles/map';
 
 class App extends Component {
 
+  componentDidMount(){
+    document.addEventListener('keydown', this.handleKeyPress, false);
+  }
+
+  componentWillUnmount(){
+    document.removeEventListener('keydown', this.handleKeyPress, false);
+  }
+
   getTileMap = () => {
     return tileMap.tileMap;
   }
 
-  parseElement = (element) => {
+  transformElement = (element) => {
     var elem = ' ';
     switch(element){
-      case '1':
+      case 1:
         elem = '#';
-      case '0':
+        break;
+      case 0:
         elem = ' ';
-      case '@':
+        break;
+      case 2:
         elem = '@';
+        break;
       default:
         elem = ' ';
     }
     return elem;
   }
 
+  handleKeyPress = (event) => {
+    if(event.key === 'w'){
+      console.log('w');
+    } else if(event.key === 's') {
+      console.log('s');
+    } else if(event.key === 'a') {
+      console.log('a');
+    } else if(event.key === 'd') {
+      console.log('d');
+    }
+  }
+
   render() {
     var tileMap = this.getTileMap();
-    var local = this; // super hacky, does not work.
+    var renderElement = this.transformElement;
+    var handleKeyPress = this.handleKeyPress;
     return (
-      <div>
+      <div onKeyPress={handleKeyPress}>
         {tileMap.map(function (arr, index) {
+          console.log(renderElement('1'));
           return (<div className='mapRow' key={index}>
             {arr.map(function (element, ind) {
-              return <span className='mapElement' key={ind}>{local.parseElement(element)}</span>;
+              return <span className='mapElement' key={ind}>{renderElement(element)}</span>;
             })}
           </div>);
         })}
