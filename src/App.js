@@ -5,7 +5,7 @@ import tileMap from './tiles/map';
 class App extends Component {
   constructor() {
     super();
-    var tiles = this.getTileMap();
+    var tiles = this.getTileMap(0);
 
     for (var i = 0; i < tiles.length; i++) {
       for (var j = 0; j < tiles[i].length; j++) {
@@ -31,8 +31,8 @@ class App extends Component {
     document.removeEventListener('keydown', this.handleKeyPress, false);
   }
 
-  getTileMap = () => {
-    return tileMap.tileMap;
+  getTileMap = (level) => {
+    return tileMap[level];
   }
 
   transformElement = (element) => {
@@ -114,7 +114,6 @@ class App extends Component {
     return (
       <div onKeyPress={handleKeyPress}>
         {tileMap.map(function (arr, index) {
-          console.log(renderElement('1'));
           return (<div className='mapRow' key={index}>
             {arr.map(function (element, ind) {
               return <span className='mapElement' key={ind}>{renderElement(element)}</span>;
