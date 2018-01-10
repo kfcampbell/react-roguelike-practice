@@ -3,18 +3,31 @@ import './App.css';
 import tileMap from './tiles/map';
 
 class App extends Component {
-  constructor(){
+  constructor() {
     super();
-    this.state = {
-      tileMap: this.getTileMap()
+    var tiles = this.getTileMap();
+
+    for (var i = 0; i < tiles.length; i++) {
+      for (var j = 0; j < tiles[i].length; j++) {
+        if (tiles[i][j] === 2) {
+          this.state = {
+            tileMap: tiles,
+            playerPosition: {
+              x: j,
+              y: i
+            }
+          }
+          return;
+        }
+      }
     }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     document.addEventListener('keydown', this.handleKeyPress, false);
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyPress, false);
   }
 
@@ -24,7 +37,7 @@ class App extends Component {
 
   transformElement = (element) => {
     var elem = ' ';
-    switch(element){
+    switch (element) {
       case 1:
         elem = '#';
         break;
@@ -41,33 +54,56 @@ class App extends Component {
   }
 
   handleKeyPress = (event) => {
-    if(event.key === 'w'){
-      console.log('w');
-      // move @ symbol up in tileMap
-      var tiles = this.state.tileMap;
-      // iterate through tilemap and move the position of the player (2) up.
-      
-      // we should really keep a cache of the player's position
-      for(var i = 0; i < tiles.length; i++) {
-        for(var j = 0; j < tiles[i].length; j++) {
-           if(tiles[i][j] === 2) {
-             tiles[i][j] = 0;
-             tiles[i-1][j] = 2;
-             this.setState({
-               tileMap: tiles
-             });
-           }
-        }
+    var tiles = this.state.tileMap;
+    var pos = this.state.playerPosition;
+    if (event.key === 'w') {
+      if (tiles[pos.y - 1][pos.x] === 0) {
+        tiles[pos.y][pos.x] = 0;
+        tiles[pos.y - 1][pos.x] = 2;
+        this.setState({
+          tileMap: tiles,
+          playerPosition: {
+            y: pos.y - 1,
+            x: pos.x
+          }
+        });
       }
-
-
-
-    } else if(event.key === 's') {
-      console.log('s');
-    } else if(event.key === 'a') {
-      console.log('a');
-    } else if(event.key === 'd') {
-      console.log('d');
+    } else if (event.key === 's') {
+      if (tiles[pos.y + 1][pos.x] === 0) {
+        tiles[pos.y][pos.x] = 0;
+        tiles[pos.y + 1][pos.x] = 2;
+        this.setState({
+          tileMap: tiles,
+          playerPosition: {
+            y: pos.y + 1,
+            x: pos.x
+          }
+        });
+      }
+    } else if (event.key === 'a') {
+      if (tiles[pos.y][pos.x - 1] === 0) {
+        tiles[pos.y][pos.x] = 0;
+        tiles[pos.y][pos.x - 1] = 2;
+        this.setState({
+          tileMap: tiles,
+          playerPosition: {
+            y: pos.y,
+            x: pos.x - 1
+          }
+        });
+      }
+    } else if (event.key === 'd') {
+      if (tiles[pos.y][pos.x + 1] === 0) {
+        tiles[pos.y][pos.x] = 0;
+        tiles[pos.y][pos.x + 1] = 2;
+        this.setState({
+          tileMap: tiles,
+          playerPosition: {
+            y: pos.y,
+            x: pos.x + 1
+          }
+        });
+      }
     }
   }
 
